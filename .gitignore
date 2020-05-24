@@ -132,3 +132,4 @@ dmypy.json
 .vscode/
 *.mp3
 *.wav
+*.db

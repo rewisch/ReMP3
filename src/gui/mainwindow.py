@@ -1,10 +1,12 @@
+import os
+
 from PyQt5 import QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtWidgets import QFileDialog
-from pydub import AudioSegment
 
 from src.model.songListModel import SongListModel
 from src.audio.mp3 import MP3
+from src.db.db import Database
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType('_gui/mainwindow.ui')
 
@@ -13,7 +15,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        self.model = SongListModel(songs=['sound.wav', 'sound.mp3'])
+
+        self.db = Database()
+        self.model = SongListModel(songs=self.db.get_songs())
         self.songView.setModel(self.model)
 
         self.songLine.installEventFilter(self)
@@ -30,9 +34,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mp3 = MP3()
 
     def add_song(self):
-        text = self.songLine.text()
-        if text:
-            self.model.songs.append(text)
+        song = self.songLine.text()
+        if song:
+            fullname, ext = song.split('.')
+            try:
+                songname = fullname.split('/')[-1]
+            except:
+                songname = fullname
+
+            if ext == 'mp3':
+                file_name = self.mp3.mp3_to_wav(song)
+            else:
+                file_name = song
+
+            with open(file_name, 'rb') as rs:
+                self.db.set_song(songname, rs.read())
+            os.remove("converted.wav")
+            self.model.songs.append(songname)
             self.model.layoutChanged.emit()
             self.songLine.setText('')
 
@@ -40,18 +58,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         indexes = self.songView.selectedIndexes()
         if indexes:
             index = indexes[0]
+            title = index.data()
             del self.model.songs[index.row()]
+            self.db.del_song(title)
             self.model.layoutChanged.emit()
             self.songView.clearSelection()
 
     def file_dialog(self):
-        file_name, filter = QFileDialog.getOpenFileName(self, "Open File", "/home", "Images (*.mp3 *.pdf)")
+        file_name, filter = QFileDialog.getOpenFileName(self, "Open Song", "/home", "Images (*.mp3 *.pdf)")
         self.songLine.setText(file_name)
 
     def play(self):
         indexes = self.songView.selectedIndexes()
-        if indexes:
-            self.mp3.play(self.model.data(indexes[0], Qt.DisplayRole))
+        blob = self.db.get_song(indexes[0].data())
+        self.mp3.play(blob)
 
     def stop(self):
         self.mp3.stop()

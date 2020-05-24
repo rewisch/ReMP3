@@ -1,33 +1,28 @@
 import pygame
+from pydub import AudioSegment
+import os
+
 
 class MP3():
-
     def __init__(self):
-        self.currentSong = ''
-        self.is_paused = False
-        pygame.mixer.init()
+        pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
 
-    def load(self, file_name):
-        self.soundObj = pygame.mixer.Sound(file_name)
-
-    def play(self, file_name):
-        if self.currentSong == file_name:
-            if self.is_paused:
-                self.pause()
-            else:
-                self.soundObj.play()
-        else:
-            self.currentSong = file_name
-            self.load(file_name)
-            self.soundObj.play()
+    def play(self, blob):
+        self.soundObj = pygame.mixer.Sound(blob)
+        self.soundObj.play()
 
     def stop(self):
         self.soundObj.stop()
 
     def pause(self):
-        if self.is_paused:
-            pygame.mixer.unpause()
-            self.is_paused = False
+        pass
+
+    def mp3_to_wav(self, file_name : str):
+        name, extension = file_name.split('.')
+        if not extension == 'mp3':
+            return None
         else:
-            pygame.mixer.pause()
-            self.is_paused = True
+            dst = "converted.wav"
+            sound = AudioSegment.from_mp3(file_name)
+            sound.export(dst, format="wav")
+            return dst
