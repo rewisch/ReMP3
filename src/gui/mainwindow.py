@@ -30,6 +30,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tbPlay.pressed.connect(self.play)
         self.tbStop.pressed.connect(self.stop)
         self.tbPause.pressed.connect(self.pause)
+        self.songView.doubleClicked.connect(self.play)
 
         self.mp3 = MP3()
 
@@ -70,8 +71,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def play(self):
         indexes = self.songView.selectedIndexes()
-        blob = self.db.get_song(indexes[0].data())
-        self.mp3.play(blob)
+        title = indexes[0].data()
+        blob = self.db.get_song(title)
+        self.mp3.play(title, blob)
 
     def stop(self):
         self.mp3.stop()
