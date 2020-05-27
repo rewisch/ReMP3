@@ -6,149 +6,102 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>300</height>
+    <width>424</width>
+    <height>314</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ReMP3</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QToolButton" name="tbPlay">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>10</y>
-      <width>26</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>icons/control.png</normaloff>icons/control.png</iconset>
-    </property>
-   </widget>
-   <widget class="QListView" name="songView">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>10</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::SingleSelection</enum>
-    </property>
-    <property name="verticalScrollMode">
-     <enum>QAbstractItemView::ScrollPerItem</enum>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="tbPause">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>10</y>
-      <width>26</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>icons/control-pause.png</normaloff>icons/control-pause.png</iconset>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="tbStop">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>10</y>
-      <width>26</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>icons/control-stop-square.png</normaloff>icons/control-stop-square.png</iconset>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="tbAddSong">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>210</y>
-      <width>26</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>icons/plus.png</normaloff>icons/plus.png</iconset>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="tbRemoveSong">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>210</y>
-      <width>26</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>icons/minus.png</normaloff>icons/minus.png</iconset>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="songLine">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>240</y>
-      <width>251</width>
-      <height>25</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="tbFileDialog">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>210</y>
-      <width>26</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>icons/folder-search-result.png</normaloff>icons/folder-search-result.png</iconset>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="5">
+     <widget class="QToolButton" name="tbAddSong">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/plus.png</normaloff>icons/plus.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="7">
+     <widget class="QToolButton" name="tbFileDialog">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/folder-search-result.png</normaloff>icons/folder-search-result.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="6">
+     <widget class="QToolButton" name="tbRemoveSong">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/minus.png</normaloff>icons/minus.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="songLine"/>
+    </item>
+    <item row="0" column="3">
+     <widget class="QListView" name="songView">
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="verticalScrollMode">
+       <enum>QAbstractItemView::ScrollPerItem</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="7">
+     <widget class="QToolButton" name="tbStop">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/control-stop-square.png</normaloff>icons/control-stop-square.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6">
+     <widget class="QToolButton" name="tbPause">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/control-pause.png</normaloff>icons/control-pause.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QToolButton" name="tbPlay">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/control.png</normaloff>icons/control.png</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>351</width>
+     <width>424</width>
      <height>22</height>
     </rect>
    </property>

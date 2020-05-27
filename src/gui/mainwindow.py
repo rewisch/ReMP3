@@ -15,6 +15,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
+        self.setAcceptDrops(True)
 
         self.db = Database()
         self.model = SongListModel(songs=self.db.get_songs())
@@ -22,9 +23,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.songLine.installEventFilter(self)
         self.songView.installEventFilter(self)
-        self.activeWidget = None
 
-        self.tbAddSong.pressed.connect(self.add_song)
+        self.tbAddSong.pressed.connect(lambda: self.add_song(self.songLine.text()))
         self.tbRemoveSong.pressed.connect(self.remove_song)
         self.tbFileDialog.pressed.connect(self.file_dialog)
         self.tbPlay.pressed.connect(self.play)
@@ -33,9 +33,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.songView.doubleClicked.connect(self.play)
 
         self.mp3 = MP3()
+        self.activeWidget = None
 
-    def add_song(self):
-        song = self.songLine.text()
+    def add_song(self, song):
         if song:
             fullname, ext = song.split('.')
             try:
@@ -68,6 +68,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def file_dialog(self):
         file_name, filter = QFileDialog.getOpenFileName(self, "Open Song", "/home", "Images (*.mp3 *.pdf)")
         self.songLine.setText(file_name)
+        self.songLine.setCursorPosition(0)
 
     def play(self):
         indexes = self.songView.selectedIndexes()
@@ -80,6 +81,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def pause(self):
         self.mp3.pause()
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            for url in event.mimeData().urls():
+                file_name = str(url.toLocalFile())
+                self.add_song(file_name)
+            event.accept()
+        else:
+            event.ignore()
 
     def keyPressEvent(self, a0: QtGui.QKeyEvent) -> None:
         if a0.key() == Qt.Key_Return and self.activeWidget == self.songLine:
